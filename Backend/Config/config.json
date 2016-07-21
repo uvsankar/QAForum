@@ -1,0 +1,10 @@
+{
+	"rdb": {
+		"host": "localhost",
+		"port": 28015,
+		"db": "QA"
+	},
+	"server": {
+		"port": 8000
+	}
+}
