@@ -41,6 +41,11 @@ class UserService {
       }
     })
   }
+
+  isUserExist(userName){
+    const me = this
+    return me.userDriver.isUserExist(userName)
+  }
 }
 
 module.exports  = UserService

@@ -10,6 +10,13 @@ class UserDriver {
       this.Auth     = DbSchema.Auth
   }
 
+  isUserExist(userName){
+    const me = this
+    if(me.User.get(userName) == null)
+     return false
+    return true
+  }
+
   addNewUser(userDetails, authDetails){
     const me        = this
     userDetails     = new me.User(userDetails)
@@ -55,10 +62,10 @@ class UserDriver {
     const me = this
     return co(function*(){
     try{
-        let user = me.Auth.get(userName).run()
+        let user = yield me.Auth.get(userName).run()
         return user
     }
-    catch(err){ throw err }
+    catch(err){ throw "User not found" }
     })
   }
 

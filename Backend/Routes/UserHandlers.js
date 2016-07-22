@@ -1,16 +1,11 @@
 const UserService      = require('../Services/UserService')
 
-class Handlers {
+class UserHandlers {
   constructor() {
     this.userService  = new UserService()
   }
 
   sendReply(reply,promise,msg){
-    // ???? change this idiot ??? ///
-    if(promise == undefined){
-      reply(msg)
-      return
-    }
     promise.then((msg)=>{
       reply({msg:msg}).code(200)
     },(err)=>{
@@ -34,14 +29,16 @@ class Handlers {
     const me = this
     if(request.auth.isAuthenticated)
       return reply.redirect('/')
-    else if(me.userService.authenticateUser(request.payload.userName, request.payload.password)){
-      request.cookieAuth.set({userName : "sankar"})
-      reply("success").code(200)
-    }
-    else {
-      reply("Nayae check ur nee db illa da").code(400)
-    }
+    me.userService.authenticateUser(request.payload.userName, request.payload.password).then((result)=>{
+      if(result){
+        request.cookieAuth.set({userName : "sankar"})
+        reply("success").code(200)
+      }
+      else {
+        reply("Nayae check ur db nee illa da").code(400)
+      }
+  },(err)=>{reply({err:err}).code(401)})
   }
 }
 
-module.exports = Handlers
+module.exports = UserHandlers

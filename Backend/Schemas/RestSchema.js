@@ -17,10 +17,16 @@ const add_user      = userSchema.keys({
   password      : Joi.string().required()
 })
 
-
+const questions     = Joi.object().keys({
+  userName      : Joi.string().required(),
+  question      : Joi.string().required(),
+  qPopularity   : Joi.number().optional(),
+  tags          : Joi.array().required()
+})
 module.exports ={
   authSchema,
   userSchema,
   add_user,
-  userSchema
+  userSchema,
+  questions
 }
