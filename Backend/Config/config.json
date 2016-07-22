@@ -6,5 +6,12 @@
 	},
 	"server": {
 		"port": 8000
+	},
+
+	"authCookie": {
+		"password"  		: "m1*}2/),p4:xDs%KEgVr7;e#85Ah^WYC",
+		"isSecure"			: false,
+		"redirectOnTry"	: false,
+		"ttl"						: 60000
 	}
 }

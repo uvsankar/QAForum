@@ -2,6 +2,7 @@ const Config          = require('../Config/config.json')
 const thinky          = require('thinky')(Config.rdb)
 const DbSchema        = require('../Schemas/DbSchema')
 const co              = require('co')
+const _               = require('lodash')
 
 class UserDriver {
   constructor() {
@@ -27,6 +28,40 @@ class UserDriver {
       }
     })
   }
-}
+
+  updateUser(userData){
+    const me      = this
+    return co(function*(){
+      try{
+        let user      = yield me.User.get(userData.userName).run()
+            // arrays gets replaced so need to append manually
+        _.forOwn(userData, (value, key)=>{
+          if(_.isArray(value))
+            userData[key] = _.concat(user[key],value)
+        })
+
+        let result    = yield user.merge(userData).save()
+        return {
+          msg : "Updation Successfull"
+        }
+      }
+      catch(err){
+        throw err;
+      }
+    })
+  }
+
+  getAuthDetails(userName) {
+    const me = this
+    return co(function*(){
+    try{
+        let user = me.Auth.get(userName).run()
+        return user
+    }
+    catch(err){ throw err }
+    })
+  }
+
+ }
 
 module.exports =UserDriver

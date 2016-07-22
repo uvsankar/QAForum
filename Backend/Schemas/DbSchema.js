@@ -4,7 +4,7 @@ const type      = thinky.type
 
 const Auth      = thinky.createModel("Auth",{
   userName    : type.string().min(3).max(10),
-  password    : type.string().min(3).max(8)
+  password    : type.string().min(3).max(10)
 })
 
 const User      = thinky.createModel("UserDetails",{
@@ -13,6 +13,8 @@ const User      = thinky.createModel("UserDetails",{
   followers   : type.array().optional().default([]),
   following   : type.array().optional().default([]),
   rating      : type.number().default(0)
+},{
+  pk  : 'userName'
 })
 
 const Question  = thinky.createModel("Questions",{
@@ -22,6 +24,8 @@ const Question  = thinky.createModel("Questions",{
   qPopularity   : type.number().default(0),
   tags          : type.array(),
   open          : type.boolean().default(true)
+},{
+  pk  : 'qId'
 })
 
 const Answer    = thinky.createModel("Answers",{
@@ -29,6 +33,8 @@ const Answer    = thinky.createModel("Answers",{
   userName      : type.string().min(3).max(10),
   aPopularity   : type.number().default(0),
   qId           : type.string()
+},{
+  pk  : 'aId'
 })
 
 module.exports = {
