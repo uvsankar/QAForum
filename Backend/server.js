@@ -1,30 +1,25 @@
 const hapi              = require('hapi')
 const config            = require('./Config/config.json')
 const RoutesRegistrar   = require('./Routes/RoutesRegistrar')
-const Inert             = require('inert');
-const Vision            = require('vision');
-const HapiSwagger       = require('hapi-swagger');
+const Inert             = require('inert')
+const Vision            = require('vision')
+const HapiSwagger       = require('hapi-swagger')
 const CookieAuth        = require('hapi-auth-cookie')
 
 const server            = new hapi.Server()
-
+const NotfService       = require('./Services/NotfService')
 
 server.connection(config.server)
 
 let routesRegistrar     = new RoutesRegistrar()
 
-const hapiSwaggerOptions = {
-    info: {
-            'title': 'Test API Documentation'
-        }
-    }
 server.register([
     CookieAuth,
     Inert,
     Vision,
     {
         'register': HapiSwagger,
-        'options': hapiSwaggerOptions
+        'options': config.hapiSwaggerOptions
     }], (err) => {
 
         server.auth.strategy('session', 'cookie', config.authCookie)
@@ -32,6 +27,7 @@ server.register([
         server.start( (err) => {
            if (err)
                 throw err
+           new NotfService().subscribeToDb()
            console.log('Server running at:', server.info.uri);
 
         })

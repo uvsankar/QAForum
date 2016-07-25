@@ -42,6 +42,11 @@ class UserService {
     })
   }
 
+  getUser(userName){
+    const me = this
+    return me.userDriver.getUser(userName)
+  }
+  
   isUserExist(userName){
     const me = this
     return me.userDriver.isUserExist(userName)

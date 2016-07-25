@@ -12,6 +12,13 @@
 		"password"  		: "m1*}2/),p4:xDs%KEgVr7;e#85Ah^WYC",
 		"isSecure"			: false,
 		"redirectOnTry"	: false,
-		"ttl"						: 60000000
+		"ttl"						: 60000
+	},
+
+	"hapiSwaggerOptions" :{
+		"info": {
+			"title": "Test API Documentation"
+    }
 	}
+	
 }

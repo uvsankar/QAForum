@@ -35,7 +35,7 @@ class UserHandlers {
         reply("success").code(200)
       }
       else {
-        reply("Nayae check ur db nee illa da").code(400)
+        reply("Nayae check ur password nee illa da").code(400)
       }
   },(err)=>{reply({err:err}).code(401)})
   }

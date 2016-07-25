@@ -1,6 +1,7 @@
 const Config          = require('../Config/config.json')
 const thinky          = require('thinky')(Config.rdb)
 const DbSchema        = require('../Schemas/DbSchema')
+const Utility         = require('../Services/Utility')
 const co              = require('co')
 const _               = require('lodash')
 
@@ -8,13 +9,31 @@ class UserDriver {
   constructor() {
       this.User     = DbSchema.User
       this.Auth     = DbSchema.Auth
+      this.r        = DbSchema.r
   }
 
   isUserExist(userName){
     const me = this
-    if(me.User.get(userName) == null)
-     return false
-    return true
+   return co(function*(){
+     try{
+          yield me.User.get(userName).run()
+          return true
+     }
+     catch(err){
+       return false
+     }
+   })
+  }
+
+  getUser(userName){
+    const me = this
+    return co(function*(){
+      try{
+        var result = yield me.User.get(userName).run()
+        return result
+      }
+      catch(err){throw "User not Found"}
+    })
   }
 
   addNewUser(userDetails, authDetails){
@@ -44,7 +63,7 @@ class UserDriver {
             // arrays gets replaced so need to append manually
         _.forOwn(userData, (value, key)=>{
           if(_.isArray(value))
-            userData[key] = _.concat(user[key],value)
+            userData[key] = _.union(user[key],value)
         })
 
         let result    = yield user.merge(userData).save()
@@ -69,6 +88,25 @@ class UserDriver {
     })
   }
 
- }
+  getUsers(filters, withFileds){
+    const me = this
+    return co(function*(){
+      try{
+          var table = me.r.table('UserDetails')
+          _.forEach(filters, (value, key)=>{
+            if(_.isArray(value)){
+              table = table.filter(Utility.arrayFilter(value, key,me))
+            }
+          })
+          if(withFileds)
+            table = table.withFields(withFileds)
+          var result = yield table.run()
+          return result
+      }
+      catch(err){throw err}
+    })
+  }
+}
+
 
 module.exports =UserDriver

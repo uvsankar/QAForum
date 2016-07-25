@@ -37,9 +37,26 @@ const Answer    = thinky.createModel("Answers",{
   pk  : 'aId'
 })
 
+const Notification = thinky.createModel("Notifications",{
+  nId           : type.string(),
+  userName      : type.string(),
+  notificationType : type.string(),
+  time          : type.string(),
+  read          : type.boolean().default(false),
+  notification  : {
+    id      : type.string(),
+    msg     : type.string()
+  }
+},{
+  pk  : 'nId'
+})
+
 module.exports = {
   Auth,
   User,
   Question,
-  Answer
+  Answer,
+  Notification,
+  r: thinky.r,
+  Query :thinky.Query
 }
