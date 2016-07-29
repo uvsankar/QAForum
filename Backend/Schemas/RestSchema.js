@@ -26,7 +26,7 @@ const questions     = Joi.object().keys({
 
 const answers       = Joi.object().keys({
   userName      : Joi.string().required(),
-  qId           : Joi.string().required(),
+  qId           : Joi.string().optional(),
   answer        : Joi.string().required()
 })
 

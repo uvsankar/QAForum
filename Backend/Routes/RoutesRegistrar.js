@@ -1,7 +1,7 @@
 const Schemas           = require('../Schemas/RestSchema')
 const UserHandlers      = require('./UserHandlers')
 const QAHandlers        = require('./QAHandlers')
-
+const Path              = require('path')
 
 class RoutesRegistrar {
   constructor() {
@@ -14,18 +14,29 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'GET',
-        path    : '/',
+        path    : '/user/{userName}/notf/',
         config  : {
-          handler   : (request, reply) => {reply("landing page")}
+          tags      : ['api'],
+          handler   : (request, reply) => {me.userHandlers.getNotfHandler(request, reply)}
         }
       })
 
       server.route({
         method  : 'GET',
-        path    : '/login/',
+        path    : '/user/list/',
         config  : {
-          description   : 'login Page ',
-          handler       : (request, reply) => { reply("not yet implemented")}
+          tags      : ['api'],
+          handler   : (request, reply) => {me.userHandlers.getAllDetailsHandler(request, reply)}
+        }
+      })
+
+      server.route({
+        method  : 'GET',
+        path    : '/user/{userName}/',
+        config  : {
+          tags          : ['api'],
+          description   : 'Get user info ',
+          handler       : (request, reply) => { me.userHandlers.getUserHandler(request, reply)}
         }
       })
 
@@ -44,7 +55,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'POST',
-        path    : '/User/',
+        path    : '/user/',
         config  : {
           description : 'Add new user',
           tags        : ['api'],
@@ -57,7 +68,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'PUT',
-        path    : '/User/',
+        path    : '/user/',
         config  : {
           description : 'Update the user details',
           tags        : ['api'],
@@ -74,7 +85,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'POST',
-        path    : '/Question/',
+        path    : '/question/',
         config  : {
           description : 'Add new Question',
           tags        : ['api'],
@@ -91,7 +102,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'POST',
-        path    : '/Question/Answer/',
+        path    : '/question/{qId}/answer/',
         config  : {
           description : 'Add new answer',
           tags        : ['api'],
@@ -108,7 +119,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'PUT',
-        path    : '/QA/',
+        path    : '/qa/',
         config  : {
           description : 'Popularity update, question close/open are handled in this API',
           tags        : ['api'],
@@ -125,7 +136,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'POST',
-        path    : '/Questions/',
+        path    : '/questions/',
         config  : {
           description : 'Get Questions based on given conditions',
           tags        : ['api'],
@@ -138,7 +149,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'GET',
-        path    : '/Question/{qId}/',
+        path    : '/question/{qId}/',
         config  : {
           description : 'Get all the answers for the given qID',
           tags        : ['api'],

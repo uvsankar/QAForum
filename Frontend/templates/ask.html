@@ -1,0 +1,36 @@
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Ask Question</h4>
+            </div>
+            <div class="modal-body">
+              <form  role="form">
+
+                <div class="form-group">
+                    <label>tags</label>
+                    <input class="form-control" ng-model="ask.form.tags">
+                </div>
+
+                <div class="form-group">
+                    <label>Your Question</label>
+                    <textarea class="form-control" rows="3" ng-model="ask.form.question"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-default" ng-click="ask.onAsk()">Ask</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+                <p>
+                  <span ng-repeat="(key,val) in ask.errMsg">{{key}} : {{val}} <br> </span>
+                <p>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

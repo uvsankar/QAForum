@@ -1,0 +1,52 @@
+<div class="col-md-6" ng-repeat="(key,QA) in qController.qa">
+
+        <div class="panel panel-default" id={{QA.Question.qId}}>
+            <div class="panel-heading">
+              <div class = "row">
+               <b><a href='#/question/{{QA.Question.qId}}/{{QA.Question.question}}'>  {{QA.Question.question}} </a> </b>
+                <span class="pull-right text-muted small"><b>{{QA.Question.userName}}</b></span>
+             </div>
+             <div class="row">
+
+                 <i class="fa fa-level-up fa-fw"> </i>{{QA.Question.qPopularity}}
+
+               <span class="pull-right text-muted small">
+                    <i class="fa fa-tags fa-fw"></i>{{QA.Question.tags}}
+                </span>
+            </div>
+            </div>
+            <div class="panel-body">
+
+                <div class="row" ng-repeat="(key2, Answer) in QA.Answers">
+                        <div class="panel {{qController.refAID== Answer.aId ? 'panel-green' :'panel-info'}}">
+                            <div class="panel-heading">
+                              <div class = "row">
+                                {{Answer.userName}}
+                                 <span class="pull-right">{{Answer.aPopularity}}</span>
+                                <button type="button" class="pull-right btn btn-danger btn-circle" ng-click="qController.onUpVote(Answer.aId, {q:key,a:key2}, 'a')"><i class="fa fa-heart"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="panel-body">
+                                <p><ng-bind-html  ng-bind-html="Answer.answer"></ng-bind-html></p>
+                            </div>
+
+                        </div>
+                  </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                  <button type="button" class="btn btn-success btn-circle" ng-click="qController.onAnswer(QA.Question.qId, key)" ng-disabled="QA.Question.open == false"  > <i class="fa fa-link"></i>
+                  </button>
+
+                  <button type="button" class="btn btn-danger btn-circle" ng-click="qController.onUpVote(QA.Question.qId, key, 'q')"><i class="fa fa-heart"></i>
+                  </button>
+
+                  <button type="button" class="btn btn-warning btn-circle pull-right" ng-click="qController.onCloseQuestion(QA.Question.qId, key)" ng-show="$root.userName == QA.Question.userName"><i class="fa fa-times"></i>
+                  </button>
+
+                </div>
+            </div>
+        </div>
+</div>

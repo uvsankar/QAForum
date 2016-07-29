@@ -1,0 +1,40 @@
+
+  <div class="row">
+      <div class="col-lg-12">
+          <h1 class="page-header">Registration</h1>
+      </div>
+      <!-- /.col-lg-12 -->
+    <div class = "login-panel">
+      <form role="form">
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="fa fa-male"></i> </span>
+            <input type="text" class="form-control" placeholder="User name" ng-model="reg.form.userName">
+        </div>
+
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i> </span>
+            <input type="password" class="form-control" placeholder="Password" ng-model="reg.form.password">
+        </div>
+
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="fa fa-mortar-board"></i> </span>
+            <input type="text" class="form-control" placeholder="Topics" ng-model="reg.form.topics">
+        </div>
+
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="fa fa-cloud"></i>   </span>
+            <input type="text" class="form-control" placeholder="Admirers lol.." ng-model="reg.form.following">
+        </div>
+
+        <button class="btn btn-lg btn-success btn-block" ng-click="reg.register()">Register</button>
+      </form>
+    </div>
+
+    <div class="panel-footer">
+        <p>
+            <span ng-repeat="(key,value) in reg.errMsg">
+              {{key}} : {{value}} <br>
+            </span>
+        </p>
+    </div>
+  </div>

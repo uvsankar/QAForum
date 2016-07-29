@@ -5,14 +5,21 @@
 		"db": "QA"
 	},
 	"server": {
-		"port": 8000
+		"port"		: 8000,
+		"routes"	: {
+			"cors"		: {
+				"origin"	: ["*"],
+				"credentials" : true
+			}
+		}
 	},
 
 	"authCookie": {
 		"password"  		: "m1*}2/),p4:xDs%KEgVr7;e#85Ah^WYC",
 		"isSecure"			: false,
 		"redirectOnTry"	: false,
-		"ttl"						: 60000
+		"isHttpOnly"		: false,
+		"ttl"						: 600000
 	},
 
 	"hapiSwaggerOptions" :{
@@ -20,5 +27,5 @@
 			"title": "Test API Documentation"
     }
 	}
-	
+
 }

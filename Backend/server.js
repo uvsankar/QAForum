@@ -13,6 +13,14 @@ server.connection(config.server)
 
 let routesRegistrar     = new RoutesRegistrar()
 
+server.state('username',{
+    ttl: config.authCookie.ttl,     
+    isSecure: false,
+    isHttpOnly : false,
+    path: '/',
+    encoding: 'none'
+})
+
 server.register([
     CookieAuth,
     Inert,

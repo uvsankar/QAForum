@@ -16,6 +16,12 @@ class UserService {
         password      : userDetails.password
       }
       delete userDetails.password
+      for(var i=0; i<userDetails.following.length; i++){
+        yield me.updateUser({
+          userName  : userDetails.following[i],
+          followers : [userDetails.userName]
+        })
+      }
       return me.userDriver.addNewUser(userDetails, authDetails)
     }
     catch(err){throw err}
@@ -25,6 +31,11 @@ class UserService {
   updateUser(details){
     const me = this
     return me.userDriver.updateUser(details)
+  }
+
+  getAllDetails(){
+    const me = this
+    return me.userDriver.getAllDetails()
   }
 
   authenticateUser(userName, password){
@@ -46,7 +57,7 @@ class UserService {
     const me = this
     return me.userDriver.getUser(userName)
   }
-  
+
   isUserExist(userName){
     const me = this
     return me.userDriver.isUserExist(userName)

@@ -1,0 +1,29 @@
+
+<div class="login-panel panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Please Sign In</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form">
+            <fieldset>
+                <div class="form-group">
+                    <input class="form-control" placeholder="User Name" type="text" ng-model="login.userName" autofocus>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Password"  type="password" ng-model="login.password" value="">
+                </div>
+
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block" ng-click="login.authenticate()">Login</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="panel-footer">
+        <p>
+            <span ng-repeat="(key,value) in login.errMsg">
+              {{key}} : {{value}} <br>
+            </span>
+        </p>
+    </div>
+</div>

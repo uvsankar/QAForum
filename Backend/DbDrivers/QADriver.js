@@ -60,8 +60,8 @@ class QADriver{
     //      I HAVE NO CLUE HOW TO MINIFY
       var result = yield  me.r.table('Answers').filter({userName:authorName}).eqJoin('qId',me.r.table('Questions'))
         .map({
-            "Question" : me.r.row("right").without("tags","open"),
-            "Answers"   : me.r.row("left").without("qId")
+            "Question" : me.r.row("right"),
+            "Answers"   : [me.r.row("left")]
             }).run()
            return result
       }
@@ -118,7 +118,7 @@ class QADriver{
           if(_.isArray(value))
             table = table.filter(Utility.arrayFilter(value,key,me))
         })
-        var records = yield table.orderBy(me.r.desc('qPopularity')).without('tags').run()
+        var records = yield table.orderBy(me.r.desc('qPopularity')).run()
         return records
       }
       catch(err){throw err}

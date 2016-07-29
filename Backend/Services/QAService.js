@@ -56,8 +56,13 @@ class QAService{
     return co(function* (){
       try{
         let doc         =  yield me.qaDriver.getQA(qa, update[qa+ "Id"])
-        let popularity  = doc[qa + 'Popularity']
+        let user        = yield me.userService.getUser(doc.userName)
 
+        let popularity  = doc[qa + 'Popularity']
+        yield me.userService.updateUser({
+          userName : user.userName,
+          rating   : user.rating + 1
+          })
         if(update[qa + 'Popularity'])
           update[qa + 'Popularity'] += popularity
 

@@ -17,12 +17,21 @@ class NotfService{
     this.r          = DbSchema.r
   }
 
+  getNotf(userName){
+    const me = this
+    return co(function*(){
+        var notf = yield me.notfDriver.getNotf('userName', userName)
+        return notf
+    })
+  }
+
   UserListener(err,feed){
     const me = this
     //    console.log(cursor)
     var notification = {
       id  : feed['old_val']['userName'],
-      msg : "Your new rating is : " + feed['new_val']['rating']
+      msg : "Your new rating is : " + feed['new_val']['rating'],
+      url : '#profile'
     }
     me.pushNotification(notification.id, 'RatingChange', notification) //returns a promise
   }
@@ -33,11 +42,12 @@ class NotfService{
       return
     return co(function*(){
       try{
-        var questionAuthor  = yield me.qaDriver.getQA('q',feed['new_val']['qId'])
-        questionAuthor      = questionAuthor["userName"]
+        var question  = yield me.qaDriver.getQA('q',feed['new_val']['qId'])
+        var questionAuthor      = question["userName"]
         var notification    = {
           id  : feed['new_val']['qId'],
-          msg : "A new answer to your Question"
+          msg : "A new answer to your Question:\n" + question['question'],
+          url : "#question/" + feed['new_val']['qId'] + "/" + question['question'] + "_referer/" + feed['new_val']['aId']
         }
         yield me.pushNotification(questionAuthor, 'NewAnswer', notification)
     }
@@ -54,7 +64,8 @@ class NotfService{
       _.forEach(users,(value)=>{
         var notf = {
           id : feed['new_val']['qId'],
-          msg: "new Question"
+          msg: "new Question :\n" + feed['new_val']['question'],
+          url: '#question/'  + feed['new_val']['qId'] + "_/" + feed['new_val']['question']
         }
         me.pushNotification(value.userName, "NewQuestion", notf) // Using lodash no way to use the yield ... ???
       })
@@ -98,8 +109,5 @@ class NotfService{
 
   }
 }
-
-
-
 
 module.exports = NotfService

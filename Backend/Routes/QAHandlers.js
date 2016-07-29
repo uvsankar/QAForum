@@ -16,6 +16,8 @@ class QAHandler{
 
   addAnswerHandler(request, reply){
     const me = this
+    if(request.payload.qId == undefined)
+      request.payload.qId = request.params.qId
     me.qaService.addAnswer(request.payload).then((msg)=>{
       reply(msg).code(200)
     },(err)=>{
@@ -46,8 +48,8 @@ class QAHandler{
     if(request.payload && request.payload.authorName){
       promise = me.qaService.getAnswersOfUser(request.payload.authorName)
     }
-    else if(request.params.qId){
-      promise = me.qaService.getAllAnswers(request.params.qId)
+    else if(request.payload.qId){
+      promise = me.qaService.getAllAnswers(request.payload.qId)
     }
     else{
       promise = me.qaService.getQuestionsForUser(request.payload.userName,request.payload.topics)

@@ -1,0 +1,159 @@
+<html lang="en" ng-app="QA">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>QA</title>
+  <link href="./Vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./Vendor/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+  <link href="./Vendor/sb-admin/css/timeline.css" rel="stylesheet">
+  <link href="./Vendor/sb-admin/css/sb-admin-2.css" rel="stylesheet">
+  <link href="./Vendor/morrisjs/morris.css" rel="stylesheet">
+  <link href="./Vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <script src="./Vendor/jquery/dist/jquery.min.js"></script>
+  <script src="./Vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./Vendor/metisMenu/dist/metisMenu.min.js"></script>
+  <script src="./Vendor/sb-admin/js/sb-admin-2.js"></script>
+
+  <script src="./js/angular.js"> </script>
+  <script src="./js/route.js"> </script>
+  <script src="./js/qa.js"> </script>
+  <script src="./js/angular-modal.js"> </script>
+  <script src="./js/angular-sanitize.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-cookies.js"></script>
+
+</head>
+  <div id="wrapper">
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">QA</a>
+          <p class="navbar-text">   Welcome <a href="#/"> {{userName}} </a> </p>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown" ng-controller="NotfController as notf">
+                <a class="dropdown-toggle" data-toggle="dropdown" ng-click="notf.onClick()">
+                    <i class="fa fa-spinner fa-spin" ng-show="notf.anyNew"></i>
+                    <i class= "fa fa-bell fa-fw" ng-show="notf.anyNew == false"> </i>
+                      <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                  <span ng-repeat="notif in notf.notfs" >
+                    <li >
+                        <a href="{{notif.notification.url}}">
+                            <div>
+                                <strong>{{notif.notificationType}}</strong>
+                                <span class="pull-right text-muted">
+                                    <em>Yesterday</em>
+                                </span>
+                            </div>
+                            <div>{{notif.notification.msg}}</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                  </span>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+            <!-- /.dropdown -->
+
+
+            <li class="dropdown" ng-controller="UserController as user">
+                <a class="dropdown-toggle" data-toggle="dropdown" >
+                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                  <span ng-if="userName != '__anonymous__'" >
+                    <li><a href="#profile/"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li><a href ng-click="user.onLogout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                  </span>
+                  <span ng-if="userName =='__anonymous__'">
+                    <li><a href="#/register/"><i class="fa  fa-file-text-o fa-fw"></i> Register</a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li><a href="#/login/"><i class="fa fa-sign-in fa-fw"></i> Login</a>
+                    </li>
+                  </span>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" ng-controller="SideNavController as snav" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        </div>
+                        <!-- /input-group -->
+                    </li>
+                    <li>
+                        <a href ng-click="snav.onAsk()" ng-hide='$root.userName == "__anonymous__"' ><i class="fa fa-dashboard fa-fw"></i> Ask</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Your topics<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-repeat="topic in $root.userDetails.topics">
+                                <a href="#topic/{{topic}}">{{topic}}</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Admirers<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-repeat="admirer in $root.userDetails.following">
+                                <a href="#user/{{admirer}}">{{admirer}}</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Followers<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-repeat="follower in $root.userDetails.followers">
+                                <a href="#user/{{follower}}">{{follower}}</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+    <div id = "page-wrapper">
+      <div  ng-view>
+        Site under construction!!!
+      </div>
+    </div>
+  </div>
+</html>

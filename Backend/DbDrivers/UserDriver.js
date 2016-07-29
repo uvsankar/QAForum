@@ -25,6 +25,31 @@ class UserDriver {
    })
   }
 
+  getAllDetails(){
+    const me = this
+    return co(function*(){
+      try{
+        var userList = yield me.getUsers(null,'userName')
+        var topics   = yield me.r.table('Questions').withFields('tags')('tags').run()
+        var topicsArray = []
+        var userArray   = []
+        _.forEach(userList, (value,key) =>{
+          userArray.push(value.userName)
+        })
+        _.forEach(topics, (value, key) =>{
+          topicsArray = _.union(topicsArray, value)
+        })
+        return  {
+          users  : userArray,
+          topics : topicsArray
+        }
+      }
+      catch(err){
+        throw err
+      }
+    })
+  }
+
   getUser(userName){
     const me = this
     return co(function*(){

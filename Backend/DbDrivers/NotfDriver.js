@@ -28,7 +28,8 @@ class NotfDriver{
         if(type == "nId")
          return yield me.Notification.get(id)
         else {
-          var notf = yield me.r.table("Notifications").filter({userName :id}).run()
+          var notf = yield me.r.table("Notifications").filter({userName :id,read:false}).run()
+          yield me.r.table("Notifications").filter({userName : id}).update({read : true}).run()
           return notf
         }
       }
