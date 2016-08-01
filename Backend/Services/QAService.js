@@ -3,11 +3,13 @@ const Utility        = require('./Utility')
 const UserService    = require('./UserService')
 const co             = require('co')
 const _              = require('lodash')
+const ElasticDriver  = require('../DbDrivers/ElasticDriver')
 
 class QAService{
   constructor(){
     this.qaDriver     = new QADriver()
     this.userService  = new UserService()
+    this.elastic      = new ElasticDriver('qa', 'questions')
   }
 
   addQuestion(question){
@@ -111,20 +113,43 @@ class QAService{
             tags       = user.topics
           }
           var Questions  = yield me.qaDriver.getQuestions({tags: tags})
-          var result     = []
-          for(var i=0 ; i<Questions.length;i++){
-            var answers = yield me.qaDriver.getAnswers(Questions[i].qId, 1)
-            result.push({
-              Question : Questions[i],
-              Answers  : answers
-            })
-          }
-
+          var result     = me.appendAnswers(Questions)
           return result
       }
       catch(err){throw err}
     })
   }
+
+  appendAnswers(Questions){
+    const me = this
+    return co(function*(){
+      try{
+        var result     = []
+        for(var i=0 ; i<Questions.length;i++){
+          var answers = yield me.qaDriver.getAnswers(Questions[i].qId, 1)
+          result.push({
+            Question : Questions[i],
+            Answers  : answers
+          })
+      }
+      return result
+    }
+      catch(err){throw err}
+  })
+}
+
+  getRelatedQuestions(searchTerm){
+    const me  = this
+    return co(function*(){
+      try{
+        var Questions = yield  me.elastic.searchQuestions(searchTerm)
+        var qa        = yield me.appendAnswers(Questions)
+        return qa
+      }
+      catch(err){throw err}
+    })
+  }
+
 }
 
 module.exports    = QAService

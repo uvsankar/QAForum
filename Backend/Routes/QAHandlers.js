@@ -42,11 +42,16 @@ class QAHandler{
   //  2. qId        - all the answers of the given question
   //  3. username   - questions in topics subscribed by the user
   //  4. topics     - questions in the given topics
+  //  5. searchTerm - question search by user
+
   getQuestionsHandler(request, reply){
     const me = this
     var promise;
     if(request.payload && request.payload.authorName){
       promise = me.qaService.getAnswersOfUser(request.payload.authorName)
+    }
+    else if(request.payload.searchTerm){
+      promise = me.qaService.getRelatedQuestions(request.payload.searchTerm)
     }
     else if(request.payload.qId){
       promise = me.qaService.getAllAnswers(request.payload.qId)

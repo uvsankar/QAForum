@@ -14,7 +14,7 @@ QA.factory('getNotf', ($rootScope, $http)=>{
   return () =>{
     var promise = $http({
       method    : 'GET',
-      url       : "http://localhost:8000/user/" + $rootScope.userName + "/notf/"
+      url       : "http://localhost:8000/user/" + $rootScope.userName + "/notfications/"
     })
     return promise
   }
@@ -46,6 +46,27 @@ QA.filter('newUsers', function($rootScope){
         filtered.push(users[i])
     }
     return filtered
+  }
+})
+
+//Filter deprecated replaced by Elastic Search !!!!......
+QA.filter('search',function(){
+  return function(qa, searchTerm){
+    var filter = []
+    if(searchTerm == undefined || searchTerm.length <=3)
+      return qa
+    searchTerm = searchTerm.toLowerCase()
+    sSet       = new Set(searchTerm.split(' '))
+    searchTerm = searchTerm.split(' ')
+    for(var i=0;i<qa.length; i++){
+      var question = qa[i].Question.question.toLowerCase()
+      var qSet     = new Set(question.split(' '))
+      var inter    = new Set([...qSet].filter(x=>sSet.has(x)) )
+      if(inter.size > 1)
+        filter.push(qa[i])
+
+    }
+    return filter
   }
 })
 
@@ -115,6 +136,12 @@ QA.config(['$routeProvider', '$httpProvider',function($routeProvider, $httpProvi
     controllerAs  : 'dash'
   })
 
+  $routeProvider.when('/search/:searchTerm',{
+    templateUrl   : './templates/questions.html',
+    controller    : 'QuestionsController',
+    controllerAs  : 'qController'
+  })
+
   $routeProvider.otherwise({
     redirectTo : '/'
   })
@@ -178,7 +205,7 @@ QA.controller('QuestionsController', function($scope, $rootScope, $http, $locati
 
     $http({
       method    : 'PUT',
-      url       : 'http://localhost:8000/qa/',
+      url       : 'http://localhost:8000/question/' + qId + '/',
       data      : {
         upvoterName : $rootScope.userName,
         type        : "q",
@@ -211,7 +238,7 @@ QA.controller('QuestionsController', function($scope, $rootScope, $http, $locati
     }
     $http({
       method  : 'PUT',
-      url     : 'http://localhost:8000/qa/',
+      url     : 'http://localhost:8000/question/' + qId +'/',
       data    : data
     }).then((msg)=>{
       if(type =='q')
@@ -260,13 +287,16 @@ QA.controller('QuestionsController', function($scope, $rootScope, $http, $locati
   else if(url.search('topic')!=-1){
     data['topics'] = [$routeParams.topic]
   }
+  else if(url.search('search') != -1){
+    data['searchTerm'] = $routeParams.searchTerm
+  }
   else{
     data['userName'] = userName
   }
 
   $http({
     method  : 'POST',
-    url     : 'http://localhost:8000/questions/',
+    url     : 'http://localhost:8000/question/search/',
     data    : data
   }).then((msg)=>{
     self.qa = msg.data
@@ -280,9 +310,13 @@ QA.controller('ErrorController', function($scope, close, err){
   $scope.input = err
 })
 
-QA.controller('SideNavController', function($scope, $rootScope, ModalService){
+QA.controller('SideNavController', function($scope, $rootScope, ModalService, $route, $location){
   var self = this
-  self.onAsk = function(){
+  self.onSearch   = function(searchTerm){
+      $location.path('/search/' + searchTerm)
+  }
+
+  self.onAsk      = function(){
     ModalService.showModal({
       templateUrl : './templates/ask.html',
       controller  : 'AskController',
@@ -291,6 +325,7 @@ QA.controller('SideNavController', function($scope, $rootScope, ModalService){
       modal.element.modal()
       modal.close.then(function(result){
         console.log(result)
+        $route.reload()
       })
     })
   }
@@ -399,7 +434,7 @@ QA.controller('DashController', function($scope, $http, $rootScope, $location, s
     // Dont add empty topics and followers ... :P
 
     data = {userName : $rootScope.userName}
-//  Messed up code STARTS ....
+    //  Messed up code STARTS ....
     if(self.following && typeof(self.following)=="string" )
       data["following"] = strip(self.following.split(','))
     else if(self.following!="") {
@@ -410,7 +445,7 @@ QA.controller('DashController', function($scope, $http, $rootScope, $location, s
     else if(self.topics!=""){
       data["topics"] = strip(self.topics)
     }
-// Messed up code ENDS....
+    // Messed up code ENDS....
 
     $http({
       method    : 'PUT',

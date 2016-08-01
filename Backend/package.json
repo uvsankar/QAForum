@@ -15,6 +15,7 @@
   "homepage": "https://bitbucket.org/sankarv/qa#readme",
   "dependencies": {
     "co": "^4.6.0",
+    "elasticsearch": "^11.0.1",
     "hapi": "^13.5.0",
     "hapi-auth-cookie": "^6.1.1",
     "hapi-swagger": "^6.1.0",

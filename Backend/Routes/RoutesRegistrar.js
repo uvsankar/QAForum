@@ -14,10 +14,11 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'GET',
-        path    : '/user/{userName}/notf/',
+        path    : '/user/{userName}/notfications/',
         config  : {
-          tags      : ['api'],
-          handler   : (request, reply) => {me.userHandlers.getNotfHandler(request, reply)}
+          description : 'Get notifications for the user',
+          tags        : ['api'],
+          handler     : (request, reply) => {me.userHandlers.getNotfHandler(request, reply)}
         }
       })
 
@@ -25,8 +26,9 @@ class RoutesRegistrar {
         method  : 'GET',
         path    : '/user/list/',
         config  : {
-          tags      : ['api'],
-          handler   : (request, reply) => {me.userHandlers.getAllDetailsHandler(request, reply)}
+          description : 'Get users and topics list',
+          tags        : ['api'],
+          handler     : (request, reply) => {me.userHandlers.getAllDetailsHandler(request, reply)}
         }
       })
 
@@ -119,7 +121,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'PUT',
-        path    : '/qa/',
+        path    : '/question/{qId}/',
         config  : {
           description : 'Popularity update, question close/open are handled in this API',
           tags        : ['api'],
@@ -136,7 +138,7 @@ class RoutesRegistrar {
 
       server.route({
         method  : 'POST',
-        path    : '/questions/',
+        path    : '/question/search/',
         config  : {
           description : 'Get Questions based on given conditions',
           tags        : ['api'],

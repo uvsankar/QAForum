@@ -6,6 +6,7 @@ const co              = require('co')
 const Config          = require('../Config/config')
 const r               = require('rethinkdb')
 const Utility         = require('./Utility')
+const ElasticDriver   = require('../DbDrivers/ElasticDriver')
 const _               = require('lodash')
 
 class NotfService{
@@ -14,6 +15,7 @@ class NotfService{
     this.notfDriver = new NotfDriver()
     this.qaDriver   = new QADriver()
     this.userDriver = new UserDriver()
+    this.elastic    = new ElasticDriver('qa', 'questions')
     this.r          = DbSchema.r
   }
 
@@ -60,6 +62,9 @@ class NotfService{
     return co(function*(){
       if(feed['old_val']!=null)
         return
+
+      yield me.elastic.insert(feed['new_val']['qId'], feed['new_val'])
+
       var users =yield  me.userDriver.getUsers({topics:feed['new_val']['tags']},["userName"])
       _.forEach(users,(value)=>{
         var notf = {
