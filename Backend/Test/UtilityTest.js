@@ -1,5 +1,5 @@
 const assert    = require('chai').assert
-const Utility   = require('../Services/Utility')
+const Utility   = require('../src/Services/Utility')
 
 
 describe('Utility tests', function(){

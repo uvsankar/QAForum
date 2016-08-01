@@ -1,8 +1,8 @@
 const assert        = require('chai').assert
-const NotfService   = require('../Services/NotfService')
-const DbSchema      = require('../Schemas/DbSchema')
+const NotfService   = require('../src/Services/NotfService')
+const DbSchema      = require('../src/Schemas/DbSchema')
 const sinon         = require('sinon')
-const Utility        = require('../Services/Utility')
+const Utility        = require('../src/Services/Utility')
 
 describe('Notification Services ', function(){
   describe('Questions Listener',function(){

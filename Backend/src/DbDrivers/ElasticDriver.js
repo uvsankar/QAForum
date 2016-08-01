@@ -9,7 +9,7 @@ class ElasticDriver{
     this.type     = type
     this.client   = new elasticsearch.Client({
   		"host"  : "localhost:9200",
-  		"log"		: "trace"
+  		"log"		: ""
   	})
   }
 
@@ -54,7 +54,7 @@ class ElasticDriver{
       catch(err){throw err}
     })
   }
-  
+
 }
 
 

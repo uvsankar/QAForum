@@ -1,6 +1,7 @@
 Backend/node_modules
-Backend/rethinkdb_data
+Backend/src/rethinkdb_data
 .vscode
 Frontend/Vendor
 Prototype/node_modules
 Prototype/Samples
+Backend/coverage
