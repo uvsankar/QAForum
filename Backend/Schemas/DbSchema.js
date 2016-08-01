@@ -1,4 +1,8 @@
-const Config    = require('../Config/config.json')
+var  Config = null
+if(process.env.NODE_ENV=='test')
+   Config       = require('../Test/Config/config.json')
+else
+   Config       = require('../Config/config.json')
 const thinky    = require('thinky')(Config.rdb)
 const type      = thinky.type
 

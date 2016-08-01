@@ -6,14 +6,17 @@ const co              = require('co')
 const Config          = require('../Config/config')
 const r               = require('rethinkdb')
 const Utility         = require('./Utility')
+const ElasticDriver   = require('../DbDrivers/ElasticDriver')
 const _               = require('lodash')
 
 class NotfService{
 
   constructor(){
+    var curDb      = process.env.NODE_ENV=='test' ? "tqa" : "qa"
     this.notfDriver = new NotfDriver()
     this.qaDriver   = new QADriver()
     this.userDriver = new UserDriver()
+    this.elastic    = new ElasticDriver(curDb, 'questions')
     this.r          = DbSchema.r
   }
 
@@ -60,12 +63,15 @@ class NotfService{
     return co(function*(){
       if(feed['old_val']!=null)
         return
+
+      yield me.elastic.insert(feed['new_val']['qId'], feed['new_val'])
+
       var users =yield  me.userDriver.getUsers({topics:feed['new_val']['tags']},["userName"])
       _.forEach(users,(value)=>{
         var notf = {
           id : feed['new_val']['qId'],
           msg: "new Question :\n" + feed['new_val']['question'],
-          url: '#question/'  + feed['new_val']['qId'] + "_/" + feed['new_val']['question']
+          url: '#question/'  + feed['new_val']['qId'] + "/" + feed['new_val']['question']
         }
         me.pushNotification(value.userName, "NewQuestion", notf) // Using lodash no way to use the yield ... ???
       })

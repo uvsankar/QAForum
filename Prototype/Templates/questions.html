@@ -1,9 +1,9 @@
-<div class="col-md-6" ng-repeat="(key,QA) in qController.qa">
+<div  ng-repeat="(key,QA) in qController.qa">
 
         <div class="panel panel-default" id={{QA.Question.qId}}>
             <div class="panel-heading">
               <div class = "row">
-               <b><a href='#/question/{{QA.Question.qId}}/{{QA.Question.question}}'>  {{QA.Question.question}} </a> </b>
+               <b><a href='http://localhost:8001/#/question/{{QA.Question.qId}}/{{QA.Question.question}}'>  {{QA.Question.question}} </a> </b>
                 <span class="pull-right text-muted small"><b>{{QA.Question.userName}}</b></span>
              </div>
              <div class="row">

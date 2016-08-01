@@ -103,9 +103,9 @@
                 <ul class="nav" id="side-menu">
                     <li class="sidebar-search">
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control" placeholder="Search..." ng-model="$root.searchTerm">
                             <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button class="btn btn-default" type="button" ng-click="snav.onSearch($root.searchTerm)">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
