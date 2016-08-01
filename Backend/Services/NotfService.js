@@ -12,10 +12,11 @@ const _               = require('lodash')
 class NotfService{
 
   constructor(){
+    var curDb      = process.env.NODE_ENV=='test' ? "tqa" : "qa"
     this.notfDriver = new NotfDriver()
     this.qaDriver   = new QADriver()
     this.userDriver = new UserDriver()
-    this.elastic    = new ElasticDriver('qa', 'questions')
+    this.elastic    = new ElasticDriver(curDb, 'questions')
     this.r          = DbSchema.r
   }
 
@@ -70,7 +71,7 @@ class NotfService{
         var notf = {
           id : feed['new_val']['qId'],
           msg: "new Question :\n" + feed['new_val']['question'],
-          url: '#question/'  + feed['new_val']['qId'] + "_/" + feed['new_val']['question']
+          url: '#question/'  + feed['new_val']['qId'] + "/" + feed['new_val']['question']
         }
         me.pushNotification(value.userName, "NewQuestion", notf) // Using lodash no way to use the yield ... ???
       })

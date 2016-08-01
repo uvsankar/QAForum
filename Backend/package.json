@@ -28,5 +28,11 @@
     "rethinkdbdash": "^2.3.17",
     "thinky": "^2.3.4",
     "vision": "^4.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "should": "^10.0.0",
+    "sinon": "^1.17.5"
   }
 }

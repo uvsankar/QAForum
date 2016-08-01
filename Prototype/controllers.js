@@ -5,7 +5,7 @@ angular.module('qaPlugin').controller("QuestionController", function($http, $sco
     self.qa  = {}
     $http({
       method  : 'POST',
-      url     : "http://localhost:8000/questions/",
+      url     : "http://localhost:8000/question/search/",
       data    : {
         "topics"  : $attrs.topics.split(',')
       }

@@ -2,7 +2,7 @@
 	"rdb": {
 		"host": "localhost",
 		"port": 28015,
-		"db": "QA"
+		"db": "testQA"
 	},
 	"server": {
 		"port"		: 8000,

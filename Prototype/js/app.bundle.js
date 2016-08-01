@@ -1005,7 +1005,7 @@ webpackJsonp([0],[
 	    self.qa  = {}
 	    $http({
 	      method  : 'POST',
-	      url     : "http://localhost:8000/questions/",
+	      url     : "http://localhost:8000/question/search/",
 	      data    : {
 	        "topics"  : $attrs.topics.split(',')
 	      }
@@ -1026,7 +1026,7 @@ webpackJsonp([0],[
 	angular = __webpack_require__(6)
 
 	angular.module('qaPlugin').component("loadTopics",{
-	  templateUrl   : 'http://localhost:8001/Templates/questions.html',
+	  templateUrl   : '../Templates/questions.html',
 	  controller    : "QuestionController",
 	  controllerAs  : 'qController',
 	  link          : function(scope, element, attrs) {
