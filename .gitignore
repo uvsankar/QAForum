@@ -5,3 +5,4 @@ Frontend/Vendor
 Prototype/node_modules
 Prototype/Samples
 Backend/coverage
+.DS_Store

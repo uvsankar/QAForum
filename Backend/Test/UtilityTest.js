@@ -1,6 +1,7 @@
 const assert    = require('chai').assert
 const Utility   = require('../src/Services/Utility')
-
+const DbSchema  = require('../src/Schemas/DbSchema')
+const sinon     = require('sinon')
 
 describe('Utility tests', function(){
   it('id should have prefix attached', function(){
@@ -9,8 +10,15 @@ describe('Utility tests', function(){
   })
 
   it('id size ',function(){
-    let id = Utility.genUID("a")
-    console.log(id + " " + id.s)
+    let id = Utility.genUID("a")    
     assert(id.length==6,'id size is not according to specified standards')
+  })
+
+  it('arrayFilter should throw exception without context',function(){
+    sinon.spy(Utility, "arrayFilter")
+    try{
+    Utility.arrayFilter()
+  }catch(err){}
+    assert.isOk(Utility.arrayFilter.threw())
   })
 })

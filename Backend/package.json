@@ -40,7 +40,8 @@
   "config":{
     "blanket" : {
       "data-cover-never" : ["node_modules", "rethinkdb_data"],
-      "pattern"           : "src/*.js"
+      "pattern"           : "/Users/ecom-sankar.v/Proj/QA/Backend/src/*.js"
+
     }
   }
 }
