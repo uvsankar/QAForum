@@ -1,6 +1,6 @@
 var  Config = null
 if(process.env.NODE_ENV=='test')
-   Config       = require('../Test/Config/config.json')
+   Config       = require('../../test/Config/config.json')
 else
    Config       = require('../Config/config.json')
 const thinky    = require('thinky')(Config.rdb)
@@ -9,6 +9,8 @@ const type      = thinky.type
 const Auth      = thinky.createModel("Auth",{
   userName    : type.string().min(3).max(10),
   password    : type.string().min(3).max(10)
+},{
+  pk : 'userName'
 })
 
 const User      = thinky.createModel("UserDetails",{

@@ -16,7 +16,7 @@ class UserService {
         password      : userDetails.password
       }
       delete userDetails.password
-      for(var i=0; i<userDetails.following.length; i++){
+      for(var i=0; userDetails.following && i<userDetails.following.length; i++){
         yield me.updateUser({
           userName  : userDetails.following[i],
           followers : [userDetails.userName]
@@ -48,7 +48,7 @@ class UserService {
         return false
       }
       catch(err){
-        throw err
+        return false // no use in throwing an error...
       }
     })
   }
