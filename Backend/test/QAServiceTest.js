@@ -27,6 +27,14 @@ describe("QAServices", function(){
       promise.then(function(){done()},function(err){done(err)})
     })
 
+    after(function(done){
+      DbSchema.r.table("UserDetails").delete().run()
+      DbSchema.r.table("Questions").delete().run()
+      DbSchema.r.table("Answers").delete().run()
+      var promise = DbSchema.r.table("Notifications").delete().run()
+      promise.then(()=>{done()},(err)=>{done(err)})
+    })
+
     it('addQuestion should throw error on illegal userName', function(){
       return assert.isRejected(qaService.addQuestion({question:"blah..",userName:"blah"}))
     })

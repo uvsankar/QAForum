@@ -18,16 +18,25 @@ describe('Notification Services ', function(){
       sinon.spy(notfService,"AnswerListener")
     })
 
-    after(function(){
+    after(function(done){
       notfService.QuestionListener.restore()
       notfService.AnswerListener.restore()
+      var promise = DbSchema.r.table("Notifications").delete().run()
+      promise.then(()=>{done()},(err)=>{done(err)})
     })
 
-    it('QuestionListener should be called', function(done){
+    it('QuestionListener,ElasticDriver, pushNotification should be called', function(done){
       let question = {qId :Utility.genUID('t'), 'userName' : "test", 'question' : "hello world"}
       question     = new Question(question)
+      sinon.spy(notfService.elastic, "insert")
+      sinon.spy(notfService,"pushNotification")
+
       Question.save(question).then(function(){
         assert.isOk(notfService.QuestionListener.calledOnce)
+        assert.isOk(notfService.elastic.insert.calledOnce)
+        assert.isOk(notfService.pushNotification.calledOnce)
+        notfService.elastic.insert.restore()
+        notfService.pushNotification.restore()
         done()
       },function(err){throw err})
     })

@@ -9,8 +9,8 @@ describe('Utility tests', function(){
     assert(id[0]=='a', 'prefix is different')
   })
 
-  it('id size ',function(){
-    let id = Utility.genUID("a")    
+  it('UID size should be 6 ',function(){
+    let id = Utility.genUID("a")
     assert(id.length==6,'id size is not according to specified standards')
   })
 

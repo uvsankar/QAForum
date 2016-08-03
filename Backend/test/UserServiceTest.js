@@ -11,7 +11,7 @@ const assert              = require('chai').assert
 const expect              = require('chai').expect
 
 
-describe("UserServices", function(){
+describe("UserServices class", function(){
 
   const User          = DbSchema.User
   const Auth          = DbSchema.Auth
@@ -25,6 +25,12 @@ describe("UserServices", function(){
           yield User.save(user)
           yield Auth.save(auth)
       }).then(function(){done()},function(err){throw err})
+  })
+
+  after(function(done){
+    DbSchema.r.table("UserDetails").delete().run()
+    var promise = DbSchema.r.table("Notifications").delete().run()
+    promise.then(()=>{done()},(err)=>{done(err)})
   })
 
   it('isUserExist', function(done){
