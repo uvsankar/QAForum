@@ -53,6 +53,8 @@ describe("UserServices class", function(){
 
   it('getAllDetails', function(done){
     assert.eventually.isObject(userService.getAllDetails()).notify(done)
+
+  //  assert.eventually.deepEqual(userService.getAllDetails())
   })
 
   it('getUser', function(done){

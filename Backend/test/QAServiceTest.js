@@ -47,8 +47,18 @@ describe("QAServices", function(){
       assert.eventually.property(promise,'qId').notify(done)
     })
 
-    it('getQuestionsAnsweredBy', function(){
-      return assert.eventually.isArray(qaService.getAnswersOfUser("__balh__"))
+    it('getQuestionsAnsweredBy', function(done){
+      var promise = co(function*(){
+        let answers = yield qaService.getAnswersOfUser(userName)
+        return answers
+      })
+      promise.then(function(answers){
+        assert.equal(answers.length,1,"failing length")
+        assert.equal(answers.Answers[0].aId,aId,"failing id")
+        done()
+      },function(err){
+        done(err)
+      })
     })
 
     it('addAnswer should return aId', function(done){
@@ -57,7 +67,7 @@ describe("QAServices", function(){
       assert.eventually.property(promise,'aId').notify(done)
     })
 
-    it('isQuestion', function(done){
+    it('isQuestion function should return valid response', function(done){
       let promise = Promise.all([
         assert.eventually.deepEqual(qaService.isQuestion(qId),{isValid:true,isOpen:true}),
         assert.eventually.deepEqual(qaService.isQuestion("__adf"),{isValid:false,isOpen:false})
